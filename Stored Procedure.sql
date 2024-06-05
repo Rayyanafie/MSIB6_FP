@@ -7,3 +7,15 @@ BEGIN
     INSERT INTO tbl_departments (name, location)
     VALUES (@name, @location);
 END
+--Update Department--
+CREATE PROCEDURE sp_UpdateDepartment
+    @id INT,
+    @name VARCHAR(30),
+    @location INT
+AS
+BEGIN
+    UPDATE tbl_departments
+    SET name = @name,
+        location = @location
+    WHERE id = @id;
+END
