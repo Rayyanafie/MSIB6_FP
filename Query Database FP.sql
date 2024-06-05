@@ -5,6 +5,7 @@ GO
 USE company_db;
 GO
 
+
 CREATE TABLE tbl_regions (
     id INT IDENTITY(1,1) PRIMARY KEY,
     name VARCHAR(25) NOT NULL
@@ -51,15 +52,6 @@ CREATE TABLE tbl_permissions (
     name VARCHAR(100) NOT NULL
 );
 
-CREATE TABLE tbl_accounts (
-    id INT IDENTITY(1,1) PRIMARY KEY,
-    username VARCHAR(25) NOT NULL,
-    password VARCHAR(255) NOT NULL,
-    otp INT,
-    is_expired BIT,
-    is_used DATETIME
-);
-
 CREATE TABLE tbl_employees (
     id INT IDENTITY(1,1) PRIMARY KEY,
     first_name VARCHAR(25) NOT NULL,
@@ -75,6 +67,15 @@ CREATE TABLE tbl_employees (
     FOREIGN KEY (manager) REFERENCES tbl_employees(id),
     FOREIGN KEY (job) REFERENCES tbl_jobs(id),
     FOREIGN KEY (department) REFERENCES tbl_departments(id)
+);
+CREATE TABLE tbl_accounts (
+    id INT PRIMARY KEY,
+    username VARCHAR(25) NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    otp INT,
+    is_expired BIT,
+    is_used DATETIME,
+    FOREIGN KEY (id) REFERENCES tbl_employees(id)
 );
 
 CREATE TABLE tbl_job_histories (
@@ -113,3 +114,4 @@ CREATE TABLE tbl_role_permissions (
     FOREIGN KEY (role) REFERENCES tbl_roles(id),
     FOREIGN KEY (permission) REFERENCES tbl_permissions(id)
 );
+
