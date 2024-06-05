@@ -88,3 +88,10 @@ BEGIN
     WHERE id = @id;
 END
 --Delete Country--
+CREATE PROCEDURE sp_DeleteCountry
+    @id CHAR(3)
+AS
+BEGIN
+    DELETE FROM tbl_countries
+    WHERE id = @id;
+END
