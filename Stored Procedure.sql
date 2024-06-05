@@ -76,4 +76,15 @@ BEGIN
     VALUES (@id, @name, @region);
 END
 --Update Country--
+CREATE PROCEDURE sp_UpdateCountry
+    @id CHAR(3),
+    @name VARCHAR(40),
+    @region INT
+AS
+BEGIN
+    UPDATE tbl_countries
+    SET name = @name,
+        region = @region
+    WHERE id = @id;
+END
 --Delete Country--
