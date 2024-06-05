@@ -19,3 +19,11 @@ BEGIN
         location = @location
     WHERE id = @id;
 END
+--Delete Department--
+CREATE PROCEDURE sp_DeleteDepartment
+    @id INT
+AS
+BEGIN
+    DELETE FROM tbl_departments
+    WHERE id = @id;
+END
