@@ -58,6 +58,13 @@ BEGIN
     WHERE id = @id;
 END
 --Delete Location--
+CREATE PROCEDURE sp_DeleteLocation
+    @id INT
+AS
+BEGIN
+    DELETE FROM tbl_locations
+    WHERE id = @id;
+END
 --Add Country--
 --Update Country--
 --Delete Country--
