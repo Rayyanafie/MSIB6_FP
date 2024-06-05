@@ -66,5 +66,14 @@ BEGIN
     WHERE id = @id;
 END
 --Add Country--
+CREATE PROCEDURE sp_AddCountry
+    @id CHAR(3),
+    @name VARCHAR(40),
+    @region INT
+AS
+BEGIN
+    INSERT INTO tbl_countries (id, name, region)
+    VALUES (@id, @name, @region);
+END
 --Update Country--
 --Delete Country--
