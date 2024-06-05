@@ -40,6 +40,23 @@ BEGIN
     VALUES (@street_address, @postal_code, @city, @state_province, @country);
 END
 --Update Location--
+CREATE PROCEDURE sp_UpdateLocation
+    @id INT,
+    @street_address VARCHAR(40),
+    @postal_code VARCHAR(12),
+    @city VARCHAR(30),
+    @state_province VARCHAR(25),
+    @country CHAR(3)
+AS
+BEGIN
+    UPDATE tbl_locations
+    SET street_address = @street_address,
+        postal_code = @postal_code,
+        city = @city,
+        state_province = @state_province,
+        country = @country
+    WHERE id = @id;
+END
 --Delete Location--
 --Add Country--
 --Update Country--
