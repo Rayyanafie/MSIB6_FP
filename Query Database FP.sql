@@ -113,8 +113,3 @@ CREATE TABLE tbl_role_permissions (
     FOREIGN KEY (role) REFERENCES tbl_roles(id),
     FOREIGN KEY (permission) REFERENCES tbl_permissions(id)
 );
-
-CREATE TABLE tbl_salary (
-    id INT IDENTITY(1,1) PRIMARY KEY,
-    salary_period date
-);
