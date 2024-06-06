@@ -7,6 +7,7 @@ BEGIN
     INSERT INTO tbl_departments (name, location)
     VALUES (@name, @location);
 END
+    
 --Update Department--
 CREATE PROCEDURE sp_UpdateDepartment
     @id INT,
@@ -19,6 +20,7 @@ BEGIN
         location = @location
     WHERE id = @id;
 END
+    
 --Delete Department--
 CREATE PROCEDURE sp_DeleteDepartment
     @id INT
@@ -27,6 +29,7 @@ BEGIN
     DELETE FROM tbl_departments
     WHERE id = @id;
 END
+    
 --Add Location--
 CREATE PROCEDURE sp_AddLocation
     @street_address VARCHAR(40),
@@ -39,6 +42,7 @@ BEGIN
     INSERT INTO tbl_locations (street_address, postal_code, city, state_province, country)
     VALUES (@street_address, @postal_code, @city, @state_province, @country);
 END
+    
 --Update Location--
 CREATE PROCEDURE sp_UpdateLocation
     @id INT,
@@ -57,6 +61,7 @@ BEGIN
         country = @country
     WHERE id = @id;
 END
+    
 --Delete Location--
 CREATE PROCEDURE sp_DeleteLocation
     @id INT
@@ -65,6 +70,7 @@ BEGIN
     DELETE FROM tbl_locations
     WHERE id = @id;
 END
+    
 --Add Country--
 CREATE PROCEDURE sp_AddCountry
     @id CHAR(3),
@@ -75,6 +81,7 @@ BEGIN
     INSERT INTO tbl_countries (id, name, region)
     VALUES (@id, @name, @region);
 END
+    
 --Update Country--
 CREATE PROCEDURE sp_UpdateCountry
     @id CHAR(3),
@@ -87,6 +94,7 @@ BEGIN
         region = @region
     WHERE id = @id;
 END
+    
 --Delete Country--
 CREATE PROCEDURE sp_DeleteCountry
     @id CHAR(3)
@@ -94,4 +102,16 @@ AS
 BEGIN
     DELETE FROM tbl_countries
     WHERE id = @id;
+END
+
+-- Add Jobs
+CREATE PROCEDURE sp_AddJobs
+    @id VARCHAR(10),
+    @title VARCHAR(35),
+	@min_salary int,
+	@max_salary int
+AS
+BEGIN
+    INSERT INTO tbl_jobs (id, title, min_salary, max_salary)
+    VALUES (@id, @title, @min_salary, @max_salary);
 END
