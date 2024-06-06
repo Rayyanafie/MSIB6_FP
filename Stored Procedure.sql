@@ -115,3 +115,18 @@ BEGIN
     INSERT INTO tbl_jobs (id, title, min_salary, max_salary)
     VALUES (@id, @title, @min_salary, @max_salary);
 END
+
+-- Update Jobs
+CREATE PROCEDURE sp_UpdateJobs
+    @id VARCHAR(10),
+    @title VARCHAR(35),
+	@min_salary int,
+	@max_salary int
+AS
+BEGIN
+    UPDATE tbl_jobs
+    SET title = @title,
+		min_salary = @min_salary,
+		max_salary = @max_salary
+    WHERE id = @id;
+END
