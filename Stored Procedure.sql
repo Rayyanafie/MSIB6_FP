@@ -130,3 +130,12 @@ BEGIN
 		max_salary = @max_salary
     WHERE id = @id;
 END
+
+-- Delete Jobs
+CREATE PROCEDURE sp_DeleteJobs
+    @id VARCHAR(10)
+AS
+BEGIN
+    DELETE FROM tbl_jobs
+    WHERE id = @id;
+END
