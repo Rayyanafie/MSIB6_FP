@@ -90,3 +90,21 @@ BEGIN
 	INSERT INTO tbl_permissions (name)
 	VALUES (@name)
 END
+--Update Permission--
+CREATE PROCEDURE sp_UpdatePermission
+	@id INT,
+	@name VARCHAR(100)
+AS
+BEGIN
+	UPDATE tbl_permissions
+	SET name = @name
+	WHERE id = @id
+END
+--Delete Permission--
+CREATE PROCEDURE sp_DeletePermission
+	@id INT
+AS
+BEGIN
+	DELETE FROM tbl_permissions
+	WHERE id = @id
+END
