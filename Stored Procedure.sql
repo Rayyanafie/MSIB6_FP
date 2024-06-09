@@ -27,3 +27,12 @@ BEGIN
     DELETE FROM tbl_departments
     WHERE id = @id;
 END
+
+--Create Regions--
+CREATE PROCEDURE sp_AddRegion
+	@name VARCHAR(25)
+AS 
+BEGIN
+	INSERT INTO tbl_regions (name)
+	VALUES (@name);
+END
