@@ -46,3 +46,11 @@ BEGIN
 	SET name = @name
 	WHERE id = @id;
 END
+--Delete Regions--
+CREATE PROCEDURE sp_DeleteRegion
+	@id INT
+AS
+BEGIN
+	DELETE FROM tbl_regions
+	WHERE id = @id;
+END
