@@ -54,3 +54,12 @@ BEGIN
 	DELETE FROM tbl_regions
 	WHERE id = @id;
 END
+
+--Add Role--
+CREATE PROCEDURE sp_AddRoles
+	@name VARCHAR(50)
+AS 
+BEGIN
+	INSERT INTO tbl_roles(name)
+	VALUES (@name);
+END
