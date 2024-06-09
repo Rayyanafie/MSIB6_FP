@@ -73,3 +73,11 @@ BEGIN
 	SET name = @name
 	WHERE id = @id;
 END
+--DELETE Role--
+CREATE PROCEDURE sp_DeleteRoles
+	@id INT
+AS
+BEGIN
+	DELETE FROM tbl_roles
+	WHERE id = @id;
+END
