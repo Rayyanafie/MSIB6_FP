@@ -81,3 +81,12 @@ BEGIN
 	DELETE FROM tbl_roles
 	WHERE id = @id;
 END
+
+--Add Permission--
+CREATE PROCEDURE sp_AddPermission
+	@name VARCHAR(100)
+AS
+BEGIN
+	INSERT INTO tbl_permissions (name)
+	VALUES (@name)
+END
