@@ -219,3 +219,66 @@ BEGIN
     DELETE FROM tbl_jobs
     WHERE id = @id;
 END
+
+--Login--
+CREATE PROCEDURE sp_Login
+    @username VARCHAR(25),
+    @password VARCHAR(255)
+AS
+BEGIN
+    DECLARE @storedPassword VARCHAR(255)
+    
+    SELECT @storedPassword = password
+    FROM tbl_accounts
+    WHERE username = @username;
+    
+    IF @storedPassword IS NULL
+    BEGIN
+        -- Username not found
+        SELECT 'Login failed: Username not found' AS message;
+    END
+    ELSE IF @storedPassword = @password
+    BEGIN
+        -- Successful login
+        SELECT 'Login successful' AS message;
+    END
+    ELSE
+    BEGIN
+        -- Incorrect password
+        SELECT 'Login failed: Incorrect password' AS message;
+    END
+END;
+
+--Change Password--
+CREATE PROCEDURE sp_ChangePassword
+    @username VARCHAR(25),
+    @oldPassword VARCHAR(255),
+    @newPassword VARCHAR(255)
+AS
+BEGIN
+    DECLARE @storedPassword VARCHAR(255)
+    
+    SELECT @storedPassword = password
+    FROM tbl_accounts
+    WHERE username = @username;
+    
+    IF @storedPassword IS NULL
+    BEGIN
+        -- Username not found
+        SELECT 'Password change failed: Username not found' AS message;
+    END
+    ELSE IF @storedPassword = @oldPassword
+    BEGIN
+        -- Correct old password, update to new password
+        UPDATE tbl_accounts
+        SET password = @newPassword
+        WHERE username = @username;
+        
+        SELECT 'Password change successful' AS message;
+    END
+    ELSE
+    BEGIN
+        -- Incorrect old password
+        SELECT 'Password change failed: Incorrect old password' AS message;
+    END
+END;
