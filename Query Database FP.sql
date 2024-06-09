@@ -1,10 +1,7 @@
 -- Create the database
 CREATE DATABASE company_db;
-GO
 
 USE company_db;
-GO
-
 
 CREATE TABLE tbl_regions (
     id INT IDENTITY(1,1) PRIMARY KEY,
@@ -51,7 +48,6 @@ CREATE TABLE tbl_permissions (
     id INT IDENTITY(1,1) PRIMARY KEY,
     name VARCHAR(100) NOT NULL
 );
-
 CREATE TABLE tbl_employees (
     id INT IDENTITY(1,1) PRIMARY KEY,
     first_name VARCHAR(25) NOT NULL,
@@ -69,7 +65,7 @@ CREATE TABLE tbl_employees (
     FOREIGN KEY (department) REFERENCES tbl_departments(id)
 );
 CREATE TABLE tbl_accounts (
-    id INT PRIMARY KEY,
+    id INT IDENTITY(1,1) PRIMARY KEY,
     username VARCHAR(25) NOT NULL,
     password VARCHAR(255) NOT NULL,
     otp INT,
