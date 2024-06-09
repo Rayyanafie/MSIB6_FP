@@ -63,3 +63,13 @@ BEGIN
 	INSERT INTO tbl_roles(name)
 	VALUES (@name);
 END
+--Update Role--
+CREATE PROCEDURE sp_UpdateRoles
+	@id INT,
+	@name VARCHAR(50)
+AS
+BEGIN
+	UPDATE tbl_roles
+	SET name = @name
+	WHERE id = @id;
+END
