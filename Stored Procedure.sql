@@ -36,3 +36,13 @@ BEGIN
 	INSERT INTO tbl_regions (name)
 	VALUES (@name);
 END
+-- Update Regions--
+CREATE PROCEDURE sp_UpdateRegion
+	@id INT,
+	@name VARCHAR(25)
+AS
+BEGIN
+	UPDATE tbl_regions
+	SET name = @name
+	WHERE id = @id;
+END
