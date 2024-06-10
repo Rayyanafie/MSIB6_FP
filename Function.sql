@@ -133,3 +133,28 @@ END;
 GO
 
 -- Function Change Password
+CREATE FUNCTION fn_CheckPassword (
+    @username VARCHAR(25),
+    @password VARCHAR(255)
+)
+RETURNS BIT
+AS
+BEGIN
+    DECLARE @storedPassword VARCHAR(255);
+    DECLARE @result BIT;
+
+    SELECT @storedPassword = password
+    FROM tbl_accounts
+    WHERE username = @username;
+
+    IF @storedPassword = @password
+    BEGIN
+        SET @result = 1; -- Passwords match
+    END
+    ELSE
+    BEGIN
+        SET @result = 0; -- Passwords do not match
+    END
+
+    RETURN @result;
+END;
