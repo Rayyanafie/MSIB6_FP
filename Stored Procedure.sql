@@ -1,5 +1,5 @@
 --Add Department--
-CREATE PROCEDURE sp_AddDepartment
+CREATE PROCEDURE usp_add_department
     @name VARCHAR(30),
     @location INT
 AS
@@ -7,9 +7,9 @@ BEGIN
     INSERT INTO tbl_departments (name, location)
     VALUES (@name, @location);
 END
-    
+
 --Update Department--
-CREATE PROCEDURE sp_UpdateDepartment
+CREATE PROCEDURE usp_update_department
     @id INT,
     @name VARCHAR(30),
     @location INT
@@ -20,9 +20,9 @@ BEGIN
         location = @location
     WHERE id = @id;
 END
-    
+
 --Delete Department--
-CREATE PROCEDURE sp_DeleteDepartment
+CREATE PROCEDURE usp_delete_department
     @id INT
 AS
 BEGIN
@@ -31,15 +31,16 @@ BEGIN
 END
 
 --Create Regions--
-CREATE PROCEDURE sp_AddRegion
+CREATE PROCEDURE usp_add_region
 	@name VARCHAR(25)
 AS 
 BEGIN
 	INSERT INTO tbl_regions (name)
 	VALUES (@name);
 END
+
 -- Update Regions--
-CREATE PROCEDURE sp_UpdateRegion
+CREATE PROCEDURE usp_update_region
 	@id INT,
 	@name VARCHAR(25)
 AS
@@ -48,8 +49,9 @@ BEGIN
 	SET name = @name
 	WHERE id = @id;
 END
+
 --Delete Regions--
-CREATE PROCEDURE sp_DeleteRegion
+CREATE PROCEDURE usp_delete_region
 	@id INT
 AS
 BEGIN
@@ -58,15 +60,16 @@ BEGIN
 END
 
 --Add Role--
-CREATE PROCEDURE sp_AddRoles
+CREATE PROCEDURE usp_add_roles
 	@name VARCHAR(50)
 AS 
 BEGIN
 	INSERT INTO tbl_roles(name)
 	VALUES (@name);
 END
+
 --Update Role--
-CREATE PROCEDURE sp_UpdateRoles
+CREATE PROCEDURE usp_update_roles
 	@id INT,
 	@name VARCHAR(50)
 AS
@@ -75,8 +78,9 @@ BEGIN
 	SET name = @name
 	WHERE id = @id;
 END
+
 --DELETE Role--
-CREATE PROCEDURE sp_DeleteRoles
+CREATE PROCEDURE usp_delete_roles
 	@id INT
 AS
 BEGIN
@@ -85,15 +89,16 @@ BEGIN
 END
 
 --Add Permission--
-CREATE PROCEDURE sp_AddPermission
+CREATE PROCEDURE usp_add_permission
 	@name VARCHAR(100)
 AS
 BEGIN
 	INSERT INTO tbl_permissions (name)
 	VALUES (@name)
 END
+
 --Update Permission--
-CREATE PROCEDURE sp_UpdatePermission
+CREATE PROCEDURE usp_update_permission
 	@id INT,
 	@name VARCHAR(100)
 AS
@@ -102,16 +107,17 @@ BEGIN
 	SET name = @name
 	WHERE id = @id
 END
+
 --Delete Permission--
-CREATE PROCEDURE sp_DeletePermission
+CREATE PROCEDURE usp_delete_permission
 	@id INT
 AS
 BEGIN
 	DELETE FROM tbl_permissions
 	WHERE id = @id
-    
+
 --Add Location--
-CREATE PROCEDURE sp_AddLocation
+CREATE PROCEDURE usp_add_location
     @street_address VARCHAR(40),
     @postal_code VARCHAR(12),
     @city VARCHAR(30),
@@ -122,9 +128,9 @@ BEGIN
     INSERT INTO tbl_locations (street_address, postal_code, city, state_province, country)
     VALUES (@street_address, @postal_code, @city, @state_province, @country);
 END
-    
+
 --Update Location--
-CREATE PROCEDURE sp_UpdateLocation
+CREATE PROCEDURE usp_update_location
     @id INT,
     @street_address VARCHAR(40),
     @postal_code VARCHAR(12),
@@ -141,18 +147,18 @@ BEGIN
         country = @country
     WHERE id = @id;
 END
-    
+
 --Delete Location--
-CREATE PROCEDURE sp_DeleteLocation
+CREATE PROCEDURE usp_delete_location
     @id INT
 AS
 BEGIN
     DELETE FROM tbl_locations
     WHERE id = @id;
 END
-    
+
 --Add Country--
-CREATE PROCEDURE sp_AddCountry
+CREATE PROCEDURE usp_add_country
     @id CHAR(3),
     @name VARCHAR(40),
     @region INT
@@ -161,9 +167,9 @@ BEGIN
     INSERT INTO tbl_countries (id, name, region)
     VALUES (@id, @name, @region);
 END
-    
+
 --Update Country--
-CREATE PROCEDURE sp_UpdateCountry
+CREATE PROCEDURE usp_UpdateCountry
     @id CHAR(3),
     @name VARCHAR(40),
     @region INT
@@ -174,9 +180,9 @@ BEGIN
         region = @region
     WHERE id = @id;
 END
-    
+
 --Delete Country--
-CREATE PROCEDURE sp_DeleteCountry
+CREATE PROCEDURE usp_delete_country
     @id CHAR(3)
 AS
 BEGIN
@@ -185,19 +191,30 @@ BEGIN
 END
 
 -- Add Jobs
-CREATE PROCEDURE sp_AddJobs
+CREATE OR ALTER PROCEDURE usp_add_jobs
     @id VARCHAR(10),
     @title VARCHAR(35),
-	@min_salary int,
-	@max_salary int
+    @min_salary int,
+    @max_salary int
 AS
 BEGIN
-    INSERT INTO tbl_jobs (id, title, min_salary, max_salary)
-    VALUES (@id, @title, @min_salary, @max_salary);
-END
+    DECLARE @result BIT;
+   
+    SET @result = dbo.func_max_salary(@min_salary, @max_salary);
+    
+    IF @result = 1
+    BEGIN
+        INSERT INTO tbl_jobs (id, title, min_salary, max_salary)
+        VALUES (@id, @title, @min_salary, @max_salary);
+    END
+    ELSE
+    BEGIN
+        RAISERROR('The max salary must be greater than the min salary', 16, 1);
+    END
+END;
 
 -- Update Jobs
-CREATE PROCEDURE sp_UpdateJobs
+CREATE PROCEDURE usp_update_jobs
     @id VARCHAR(10),
     @title VARCHAR(35),
 	@min_salary int,
@@ -212,7 +229,7 @@ BEGIN
 END
 
 -- Delete Jobs
-CREATE PROCEDURE sp_DeleteJobs
+CREATE PROCEDURE usp_delete_jobs
     @id VARCHAR(10)
 AS
 BEGIN
@@ -220,65 +237,60 @@ BEGIN
     WHERE id = @id;
 END
 
---Login--
-CREATE PROCEDURE sp_Login
-    @username VARCHAR(25),
-    @password VARCHAR(255)
+-- Forgot Password
+CREATE OR ALTER PROCEDURE usp_forgot_password 
+    @Email VARCHAR(25),
+    @New_Password VARCHAR(255),
+    @Confirm_Password VARCHAR(255),
+    @OTP INT
 AS
 BEGIN
-    DECLARE @storedPassword VARCHAR(255)
-    
-    SELECT @storedPassword = password
-    FROM tbl_accounts
-    WHERE username = @username;
-    
-    IF @storedPassword IS NULL
-    BEGIN
-        -- Username not found
-        SELECT 'Login failed: Username not found' AS message;
-    END
-    ELSE IF @storedPassword = @password
-    BEGIN
-        -- Successful login
-        SELECT 'Login successful' AS message;
-    END
-    ELSE
-    BEGIN
-        -- Incorrect password
-        SELECT 'Login failed: Incorrect password' AS message;
-    END
-END;
+    SET NOCOUNT ON;
 
---Change Password--
-CREATE PROCEDURE sp_ChangePassword
-    @username VARCHAR(25),
-    @oldPassword VARCHAR(255),
-    @newPassword VARCHAR(255)
-AS
-BEGIN
-    DECLARE @storedPassword VARCHAR(255)
+    DECLARE @EmployeeID INT;
+    DECLARE @ValidPassword BIT;
+    DECLARE @PasswordsMatch BIT;
+
+	-- Cek employee
+    SELECT @EmployeeID = e.id
+    FROM tbl_employees e
+    JOIN tbl_accounts a ON e.id = a.id
+    WHERE e.email = @Email AND a.otp = @OTP;
+
+	-- Cek aturan password
+    SELECT @ValidPassword = dbo.func_password_policy(@New_Password);
     
-    SELECT @storedPassword = password
-    FROM tbl_accounts
-    WHERE username = @username;
-    
-    IF @storedPassword IS NULL
+	-- Cek kesamaan password
+	SELECT @PasswordsMatch = dbo.func_password_match(@New_Password, @Confirm_Password);
+
+	-- If no matching employee found, return an error
+    IF @EmployeeID IS NULL
     BEGIN
-        -- Username not found
-        SELECT 'Password change failed: Username not found' AS message;
+        RAISERROR('Invalid email or OTP.', 16, 1);
+        RETURN;
     END
-    ELSE IF @storedPassword = @oldPassword
+
+	-- If the password policy is not met, return an error
+    IF @ValidPassword = 0
     BEGIN
-        -- Correct old password, update to new password
-        UPDATE tbl_accounts
-        SET password = @newPassword
-        WHERE username = @username;
-        
-        SELECT 'Password change successful' AS message;
+        RAISERROR('Password does not meet the required policy.', 16, 1);
+        RETURN;
     END
-    ELSE
+
+	-- If the passwords do not match, return an error
+    IF @PasswordsMatch = 0
     BEGIN
-        -- Incorrect old password
-        SELECT 'Password change failed: Incorrect old password' AS message;
+        RAISERROR('New password and confirm password do not match.', 16, 1);
+        RETURN;
     END
-END;
+
+	IF @EmployeeID IS NOT NULL AND @ValidPassword = 1 AND @PasswordsMatch = 1
+	BEGIN
+		UPDATE tbl_accounts
+		SET password = @New_Password, is_used = 1, is_expired = 1
+		WHERE id = @EmployeeID;
+
+		PRINT 'Password updated successfully.';
+	END
+END
+GO
