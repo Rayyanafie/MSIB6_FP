@@ -70,7 +70,7 @@ CREATE TABLE tbl_accounts (
     password VARCHAR(255) NOT NULL,
     otp INT,
     is_expired BIT,
-    is_used DATETIME,
+    is_used BIT,
     FOREIGN KEY (id) REFERENCES tbl_employees(id)
 );
 
