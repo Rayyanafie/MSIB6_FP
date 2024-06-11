@@ -33,7 +33,7 @@ CREATE OR ALTER FUNCTION func_password_policy (@password VARCHAR(255))
 RETURNS BIT
 AS
 BEGIN
-    DECLARE @result BIT;
+    DECLARE @result BIT = 0;
 
     IF LEN(@password) >= 8
     BEGIN
@@ -44,6 +44,11 @@ BEGIN
         BEGIN
             SET @result = 1;
         END
+
+		ELSE
+		BEGIN
+			SET @result = 0;
+		END
     END
 
     RETURN @result;
