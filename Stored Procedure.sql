@@ -392,3 +392,22 @@ BEGIN
 		PRINT 'Employee with the given ID and email does not exist.';
 	END
 END;
+
+-- Add Overtime 
+CREATE OR ALTER PROCEDURE usp_add_overtime
+	@employee_id int,
+	@salary_period CHAR(7), -- Format YYYY-MM
+	@overtime int
+AS
+BEGIN
+	DECLARE @salary_period_date DATE;
+	SET @salary_period_date = CAST(@salary_period + '-01' AS DATE);
+
+	IF NOT EXISTS (SELECT 1 FROM tbl_employees WHERE id = @employee_id)
+	BEGIN 
+		PRINT 'Employee does not exist';
+	END
+
+	INSERT INTO tbl_payslip (employee, salary_period, overtime)
+    VALUES (@employee_id, @salary_period_date, @overtime);
+END;
