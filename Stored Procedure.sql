@@ -221,11 +221,22 @@ CREATE PROCEDURE usp_update_jobs
 	@max_salary int
 AS
 BEGIN
-    UPDATE tbl_jobs
-    SET title = @title,
-		min_salary = @min_salary,
-		max_salary = @max_salary
-    WHERE id = @id;
+	DECLARE @result BIT;
+   
+    SET @result = dbo.func_max_salary(@min_salary, @max_salary);
+    
+    IF @result = 1
+    BEGIN
+        UPDATE tbl_jobs
+        SET title = @title,
+            min_salary = @min_salary,
+            max_salary = @max_salary
+        WHERE id = @id;
+    END
+    ELSE
+    BEGIN
+        RAISERROR('The max salary must be greater than the min salary', 16, 1);
+    END
 END
 
 -- Delete Jobs
@@ -236,8 +247,9 @@ BEGIN
     DELETE FROM tbl_jobs
     WHERE id = @id;
 END
+
 --Login
-CREATE PROCEDURE sp_Login
+CREATE PROCEDURE usp_Login
     @username VARCHAR(25),
     @password VARCHAR(255)
 AS
@@ -266,7 +278,7 @@ BEGIN
 END;
 
 --Change Password
-CREATE or alter PROCEDURE sp_ChangePassword
+CREATE or alter PROCEDURE usp_change_password
     @username VARCHAR(25),
     @oldPassword VARCHAR(255),
     @newPassword VARCHAR(255)
@@ -312,33 +324,26 @@ BEGIN
     DECLARE @ValidPassword BIT;
     DECLARE @PasswordsMatch BIT;
 
-	-- Cek employee
     SELECT @EmployeeID = e.id
     FROM tbl_employees e
     JOIN tbl_accounts a ON e.id = a.id
     WHERE e.email = @Email AND a.otp = @OTP;
 
-	-- Cek aturan password
     SELECT @ValidPassword = dbo.func_password_policy(@New_Password);
-    
-	-- Cek kesamaan password
 	SELECT @PasswordsMatch = dbo.func_password_match(@New_Password, @Confirm_Password);
 
-	-- If no matching employee found, return an error
     IF @EmployeeID IS NULL
     BEGIN
         RAISERROR('Invalid email or OTP.', 16, 1);
         RETURN;
     END
 
-	-- If the password policy is not met, return an error
     IF @ValidPassword = 0
     BEGIN
         RAISERROR('Password does not meet the required policy.', 16, 1);
         RETURN;
     END
 
-	-- If the passwords do not match, return an error
     IF @PasswordsMatch = 0
     BEGIN
         RAISERROR('New password and confirm password do not match.', 16, 1);
@@ -354,4 +359,36 @@ BEGIN
 		PRINT 'Password updated successfully.';
 	END
 END
-GO
+
+-- Generate OTP
+CREATE OR ALTER PROCEDURE usp_generate_otp 
+	@employee_id int, 
+	@employee_email VARCHAR(25)
+AS
+BEGIN
+	DECLARE @new_otp int;
+	DECLARE @account_id int;
+
+	IF EXISTS (SELECT 1 FROM tbl_employees WHERE id = @employee_id AND email = @employee_email)
+	BEGIN
+		SET @new_otp = FLOOR(RAND() * 900000) + 100000;
+		SELECT @account_id = id FROM tbl_accounts WHERE id = @employee_id;
+
+		IF @account_id IS NOT NULL
+		BEGIN
+			UPDATE tbl_accounts
+			SET otp = @new_otp, is_expired = 0, is_used = 0
+			WHERE id = @employee_id;
+
+			PRINT 'OTP has been updated successfully';
+		END
+		ELSE
+		BEGIN
+			PRINT 'Account for the given employee does not exist';
+		END
+	END
+	ELSE
+	BEGIN
+		PRINT 'Employee with the given ID and email does not exist.';
+	END
+END;
