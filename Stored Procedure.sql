@@ -411,3 +411,85 @@ BEGIN
 	INSERT INTO tbl_payslip (employee, salary_period, overtime)
     VALUES (@employee_id, @salary_period_date, @overtime);
 END;
+
+-- Add Employee or Register
+CREATE OR ALTER PROCEDURE usp_register 
+	@first_name VARCHAR(25),
+	@last_name VARCHAR(25),
+	@gender VARCHAR(10),
+	@email VARCHAR(25),
+	@phone VARCHAR(20),
+	@hire_date DATE,
+	@salary int,
+	@manager_id int,
+	@job_id VARCHAR(10),
+	@department_id int,
+	@password VARCHAR(255),
+	@confirm_password VARCHAR(255)
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+	DECLARE @email_format BIT;
+	DECLARE @password_policy BIT;
+	DECLARE @gender_valid BIT;
+	DECLARE @phone_valid BIT;
+	DECLARE @password_match BIT;
+	DECLARE @salary_valid BIT;
+	
+	-- Check email format
+    SET @email_format = dbo.func_email_format(@email);
+    IF @email_format = 0
+    BEGIN
+        PRINT 'Email format is invalid';
+        RETURN;
+    END
+
+    -- Check password policy
+    SET @password_policy = dbo.func_password_policy(@password);
+    IF @password_policy = 0
+    BEGIN
+        PRINT 'Password does not meet the policy requirements';
+        RETURN;
+    END
+
+    -- Check if passwords match
+    SET @password_match = dbo.func_password_match(@password, @confirm_password);
+    IF @password_match = 0
+    BEGIN
+        PRINT 'Passwords do not match';
+        RETURN;
+    END
+
+    -- Check gender validity
+    SET @gender_valid = dbo.func_gender(@gender);
+    IF @gender_valid = 0
+    BEGIN
+        PRINT 'Gender is invalid';
+        RETURN;
+    END
+
+    -- Check phone number validity
+    SET @phone_valid = dbo.func_phone_number(@phone);
+    IF @phone_valid = 0
+    BEGIN
+        PRINT 'Phone number is invalid';
+        RETURN;
+    END
+
+    -- Check salary range for the job
+    SET @salary_valid = dbo.func_salary(@job_id, @salary);
+    IF @salary_valid = 0
+    BEGIN
+        PRINT 'Salary is out of the valid range for the job';
+        RETURN;
+    END
+
+	INSERT INTO tbl_employees (first_name, last_name, gender, email, phone, hire_date, salary, manager, job, department)
+	VALUES (@first_name, @last_name, @gender, @email, @phone, @hire_date, @salary, @manager_id, @job_id, @department_id);
+
+	INSERT INTO tbl_accounts (username, password, otp, is_expired, is_used)
+	VALUES (@email, @password, NULL, 0, 0);
+
+	PRINT 'Employee and account have been successfully registered.';
+END;
