@@ -115,6 +115,7 @@ AS
 BEGIN
 	DELETE FROM tbl_permissions
 	WHERE id = @id
+END
 
 --Add Location--
 CREATE PROCEDURE usp_add_location
@@ -210,6 +211,7 @@ BEGIN
     ELSE
     BEGIN
         RAISERROR('The max salary must be greater than the min salary', 16, 1);
+		RETURN;
     END
 END;
 
@@ -236,6 +238,7 @@ BEGIN
     ELSE
     BEGIN
         RAISERROR('The max salary must be greater than the min salary', 16, 1);
+		RETURN;
     END
 END
 
@@ -312,49 +315,57 @@ END;
 
 -- Forgot Password
 CREATE OR ALTER PROCEDURE usp_forgot_password 
-    @Email VARCHAR(25),
-    @New_Password VARCHAR(255),
-    @Confirm_Password VARCHAR(255),
-    @OTP INT
+    @email VARCHAR(25),
+    @new_password VARCHAR(255),
+    @confirm_password VARCHAR(255),
+    @otp INT
 AS
 BEGIN
     SET NOCOUNT ON;
 
-    DECLARE @EmployeeID INT;
-    DECLARE @ValidPassword BIT;
-    DECLARE @PasswordsMatch BIT;
+    DECLARE @employee_id INT;
+    DECLARE @valid_password BIT;
+    DECLARE @password_match BIT;
+	DECLARE @is_used BIT;
+	DECLARE @is_expired BIT
 
-    SELECT @EmployeeID = e.id
+    SELECT @employee_id = e.id, @is_expired = e.is_expired, @is_used = e.is_used
     FROM tbl_employees e
     JOIN tbl_accounts a ON e.id = a.id
-    WHERE e.email = @Email AND a.otp = @OTP;
+    WHERE e.email = @email AND a.otp = @otp;
 
-    SELECT @ValidPassword = dbo.func_password_policy(@New_Password);
-	SELECT @PasswordsMatch = dbo.func_password_match(@New_Password, @Confirm_Password);
+    SELECT @valid_password = dbo.func_password_policy(@new_password);
+	SELECT @passwords_match = dbo.func_password_match(@new_password, @confirm_password);
 
-    IF @EmployeeID IS NULL
+    IF @employee_id IS NULL
     BEGIN
-        RAISERROR('Invalid email or OTP.', 16, 1);
+        RAISERROR('Invalid email or OTP', 16, 1);
         RETURN;
     END
 
-    IF @ValidPassword = 0
+    IF @valid_password = 0
     BEGIN
-        RAISERROR('Password does not meet the required policy.', 16, 1);
+        RAISERROR('Password does not meet the required policy', 16, 1);
         RETURN;
     END
 
-    IF @PasswordsMatch = 0
+    IF @passwords_match = 0
     BEGIN
-        RAISERROR('New password and confirm password do not match.', 16, 1);
+        RAISERROR('New password and confirm password do not match', 16, 1);
         RETURN;
     END
 
-	IF @EmployeeID IS NOT NULL AND @ValidPassword = 1 AND @PasswordsMatch = 1
+	IF @is_expired = 1 OR @is_used = 1
+	BEGIN
+		RAISERROR('Password change is not allowed, Please update the OTP first', 16, 1);
+		RETURN;
+	END
+
+	IF @employee_id IS NOT NULL AND @valid_password = 1 AND @passwords_match = 1 AND is_expired = 0 AND @is_used = 0
 	BEGIN
 		UPDATE tbl_accounts
-		SET password = @New_Password, is_used = 1, is_expired = 1
-		WHERE id = @EmployeeID;
+		SET password = @new_Password, is_used = 1, is_expired = 1
+		WHERE id = @employee_id;
 
 		PRINT 'Password updated successfully.';
 	END
@@ -384,12 +395,14 @@ BEGIN
 		END
 		ELSE
 		BEGIN
-			PRINT 'Account for the given employee does not exist';
+			RAISERROR('Account for the given employee does not exist', 16, 1);
+			RETURN;
 		END
 	END
 	ELSE
 	BEGIN
-		PRINT 'Employee with the given ID and email does not exist.';
+		RAISERROR('Employee with the given ID and email does not exist', 16, 1);
+		RETURN;
 	END
 END;
 
@@ -405,7 +418,8 @@ BEGIN
 
 	IF NOT EXISTS (SELECT 1 FROM tbl_employees WHERE id = @employee_id)
 	BEGIN 
-		PRINT 'Employee does not exist';
+		RAISERROR('Employee does not exist', 16, 1);
+		RETURN;
 	END
 
 	INSERT INTO tbl_payslip (employee, salary_period, overtime)
@@ -441,48 +455,48 @@ BEGIN
     SET @email_format = dbo.func_email_format(@email);
     IF @email_format = 0
     BEGIN
-        PRINT 'Email format is invalid';
-        RETURN;
+		RAISERROR('Email format is invalid', 16, 1);
+		RETURN;
     END
 
     -- Check password policy
     SET @password_policy = dbo.func_password_policy(@password);
     IF @password_policy = 0
     BEGIN
-        PRINT 'Password does not meet the policy requirements';
-        RETURN;
+        RAISERROR('Password does not meet the policy requirements', 16, 1);
+		RETURN;
     END
 
     -- Check if passwords match
     SET @password_match = dbo.func_password_match(@password, @confirm_password);
     IF @password_match = 0
     BEGIN
-        PRINT 'Passwords do not match';
-        RETURN;
+		RAISERROR('Passwords do not match', 16, 1);
+		RETURN;
     END
 
     -- Check gender validity
     SET @gender_valid = dbo.func_gender(@gender);
     IF @gender_valid = 0
     BEGIN
-        PRINT 'Gender is invalid';
-        RETURN;
+        RAISERROR('Gender is invalid', 16, 1);
+		RETURN;
     END
 
     -- Check phone number validity
     SET @phone_valid = dbo.func_phone_number(@phone);
     IF @phone_valid = 0
     BEGIN
-        PRINT 'Phone number is invalid';
-        RETURN;
+        RAISERROR('Phone number is invalid', 16, 1);
+		RETURN;
     END
 
     -- Check salary range for the job
     SET @salary_valid = dbo.func_salary(@job_id, @salary);
     IF @salary_valid = 0
     BEGIN
-        PRINT 'Salary is out of the valid range for the job';
-        RETURN;
+        RAISERROR('Salary is out of the valid range for the job', 16, 1);
+		RETURN;
     END
 
 	INSERT INTO tbl_employees (first_name, last_name, gender, email, phone, hire_date, salary, manager, job, department)
