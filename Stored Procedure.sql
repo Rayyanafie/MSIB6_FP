@@ -219,7 +219,8 @@ BEGIN
     DELETE FROM tbl_jobs
     WHERE id = @id;
 END
-
+	
+-- Update Employee
 CREATE OR ALTER PROCEDURE usp_update_employee 
 	@employee_id int,
 	@first_name VARCHAR(25),
@@ -309,4 +310,23 @@ BEGIN
 		id = @employee_id;
 
 	PRINT 'Employee data has been successfully updated.';
+END;
+
+
+--Delete Employee
+CREATE OR ALTER PROCEDURE usp_delete_employee 
+	@employee_id int
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+	DELETE FROM tbl_employees 
+	WHERE 
+		id = @employee_id;
+
+	DELETE FROM tbl_accounts 
+	WHERE 
+		username = (SELECT email FROM tbl_employees WHERE id = @employee_id);
+
+	PRINT 'Employee data and associated account have been successfully deleted.';
 END;
