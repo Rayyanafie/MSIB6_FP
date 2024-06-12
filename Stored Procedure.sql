@@ -219,3 +219,94 @@ BEGIN
     DELETE FROM tbl_jobs
     WHERE id = @id;
 END
+
+CREATE OR ALTER PROCEDURE usp_update_employee 
+	@employee_id int,
+	@first_name VARCHAR(25),
+	@last_name VARCHAR(25),
+	@gender VARCHAR(10),
+	@email VARCHAR(25),
+	@phone VARCHAR(20),
+	@hire_date DATE,
+	@salary int,
+	@manager_id int,
+	@job_id VARCHAR(10),
+	@department_id int,
+	@password VARCHAR(255),
+	@confirm_password VARCHAR(255)
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+	DECLARE @email_format BIT;
+	DECLARE @password_policy BIT;
+	DECLARE @gender_valid BIT;
+	DECLARE @phone_valid BIT;
+	DECLARE @password_match BIT;
+	DECLARE @salary_valid BIT;
+	
+	-- Check email format
+    SET @email_format = dbo.func_email_format(@email);
+    IF @email_format = 0
+    BEGIN
+		RAISERROR('Email format is invalid', 16, 1);
+		RETURN;
+    END
+
+    -- Check password policy
+    SET @password_policy = dbo.func_password_policy(@password);
+    IF @password_policy = 0
+    BEGIN
+        RAISERROR('Password does not meet the policy requirements', 16, 1);
+		RETURN;
+    END
+
+    -- Check if passwords match
+    SET @password_match = dbo.func_password_match(@password, @confirm_password);
+    IF @password_match = 0
+    BEGIN
+		RAISERROR('Passwords do not match', 16, 1);
+		RETURN;
+    END
+
+    -- Check gender validity
+    SET @gender_valid = dbo.func_gender(@gender);
+    IF @gender_valid = 0
+    BEGIN
+        RAISERROR('Gender is invalid', 16, 1);
+		RETURN;
+    END
+
+    -- Check phone number validity
+    SET @phone_valid = dbo.func_phone_number(@phone);
+    IF @phone_valid = 0
+    BEGIN
+        RAISERROR('Phone number is invalid', 16, 1);
+		RETURN;
+    END
+
+    -- Check salary range for the job
+    SET @salary_valid = dbo.func_salary(@job_id, @salary);
+    IF @salary_valid = 0
+    BEGIN
+        RAISERROR('Salary is out of the valid range for the job', 16, 1);
+		RETURN;
+    END
+
+	UPDATE tbl_employees 
+	SET 
+		first_name = @first_name,
+		last_name = @last_name,
+		gender = @gender,
+		email = @email,
+		phone = @phone,
+		hire_date = @hire_date,
+		salary = @salary,
+		manager = @manager_id,
+		job = @job_id,
+		department = @department_id
+	WHERE 
+		id = @employee_id;
+
+	PRINT 'Employee data has been successfully updated.';
+END;
