@@ -138,7 +138,7 @@ END;
 GO
 
 -- Function Change Password
-CREATE FUNCTION fn_CheckPassword (
+CREATE FUNCTION func_check_password (
     @username VARCHAR(25),
     @password VARCHAR(255)
 )
@@ -163,3 +163,4 @@ BEGIN
 
     RETURN @result;
 END;
+GO
