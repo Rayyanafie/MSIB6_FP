@@ -741,36 +741,29 @@ BEGIN
     DECLARE @account_id INT;
     DECLARE @existing_role_id INT;
 
-    -- Check if the employee already has an account
-    SELECT @account_id = id
-    FROM tbl_accounts
-    WHERE id = @employee_id;
-
-    -- If the employee doesn't have an account, create a new one
-    IF @account_id IS NULL
+    -- Memeriksa apakah employee_id ada di tbl_employees
+    IF NOT EXISTS (SELECT 1 FROM tbl_employees WHERE id = @employee_id)
     BEGIN
-        INSERT INTO tbl_accounts (id, username, password, otp, is_expired, is_used)
-        VALUES (@employee_id, '', '', 0, 0, 0);
-
-        SET @account_id = SCOPE_IDENTITY(); -- Get the newly inserted account id
+        RAISERROR ('Employee not found', 16, 1);
+        RETURN;
     END
 
-    -- Check if there is already a role assigned to the employee
+    -- Memeriksa role, apakah sudah memiliki role atau belum
     SELECT @existing_role_id = role
     FROM tbl_account_roles
-    WHERE account = @account_id;
+    WHERE account = @employee_id;
 
-    -- If there is an existing role assigned, update it; otherwise, insert new role
+    -- Jika sudah ada role maka akan update, jika tidak memiliki role maka akan membuat role baru
     IF @existing_role_id IS NOT NULL
     BEGIN
         UPDATE tbl_account_roles
         SET role = @role_id
-        WHERE account = @account_id;
+        WHERE account = @employee_id;
     END
     ELSE
     BEGIN
         INSERT INTO tbl_account_roles (account, role)
-        VALUES (@account_id, @role_id);
+        VALUES (@employee_id, @role_id);
     END
 END
 GO
