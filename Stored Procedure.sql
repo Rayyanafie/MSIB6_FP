@@ -1,5 +1,8 @@
+USE company_db;
+GO
+
 --Add Department--
-CREATE PROCEDURE usp_add_department
+CREATE OR ALTER PROCEDURE usp_add_department
     @name VARCHAR(30),
     @location INT
 AS
@@ -7,9 +10,10 @@ BEGIN
     INSERT INTO tbl_departments (name, location)
     VALUES (@name, @location);
 END
+GO
 
 --Update Department--
-CREATE PROCEDURE usp_update_department
+CREATE OR ALTER PROCEDURE usp_update_department
     @id INT,
     @name VARCHAR(30),
     @location INT
@@ -20,27 +24,30 @@ BEGIN
         location = @location
     WHERE id = @id;
 END
+GO
 
 --Delete Department--
-CREATE PROCEDURE usp_delete_department
+CREATE OR ALTER PROCEDURE usp_delete_department
     @id INT
 AS
 BEGIN
     DELETE FROM tbl_departments
     WHERE id = @id;
 END
+GO
 
 --Create Regions--
-CREATE PROCEDURE usp_add_region
+CREATE OR ALTER PROCEDURE usp_add_region
 	@name VARCHAR(25)
 AS 
 BEGIN
 	INSERT INTO tbl_regions (name)
 	VALUES (@name);
 END
+GO
 
 -- Update Regions--
-CREATE PROCEDURE usp_update_region
+CREATE OR ALTER PROCEDURE usp_update_region
 	@id INT,
 	@name VARCHAR(25)
 AS
@@ -49,27 +56,30 @@ BEGIN
 	SET name = @name
 	WHERE id = @id;
 END
+GO
 
 --Delete Regions--
-CREATE PROCEDURE usp_delete_region
+CREATE OR ALTER PROCEDURE usp_delete_region
 	@id INT
 AS
 BEGIN
 	DELETE FROM tbl_regions
 	WHERE id = @id;
 END
+GO
 
 --Add Role--
-CREATE PROCEDURE usp_add_roles
+CREATE OR ALTER PROCEDURE usp_add_roles
 	@name VARCHAR(50)
 AS 
 BEGIN
 	INSERT INTO tbl_roles(name)
 	VALUES (@name);
-END
+END;
+GO
 
 --Update Role--
-CREATE PROCEDURE usp_update_roles
+CREATE OR ALTER PROCEDURE usp_update_roles
 	@id INT,
 	@name VARCHAR(50)
 AS
@@ -77,28 +87,31 @@ BEGIN
 	UPDATE tbl_roles
 	SET name = @name
 	WHERE id = @id;
-END
+END;
+GO
 
 --DELETE Role--
-CREATE PROCEDURE usp_delete_roles
+CREATE OR ALTER PROCEDURE usp_delete_roles
 	@id INT
 AS
 BEGIN
 	DELETE FROM tbl_roles
 	WHERE id = @id;
-END
+END;
+GO
 
 --Add Permission--
-CREATE PROCEDURE usp_add_permission
+CREATE OR ALTER PROCEDURE usp_add_permission
 	@name VARCHAR(100)
 AS
 BEGIN
 	INSERT INTO tbl_permissions (name)
 	VALUES (@name)
 END
+GO
 
 --Update Permission--
-CREATE PROCEDURE usp_update_permission
+CREATE OR ALTER PROCEDURE usp_update_permission
 	@id INT,
 	@name VARCHAR(100)
 AS
@@ -107,18 +120,20 @@ BEGIN
 	SET name = @name
 	WHERE id = @id
 END
+GO
 
 --Delete Permission--
-CREATE PROCEDURE usp_delete_permission
+CREATE OR ALTER PROCEDURE usp_delete_permission
 	@id INT
 AS
 BEGIN
 	DELETE FROM tbl_permissions
 	WHERE id = @id
 END
+GO
 
 --Add Location--
-CREATE PROCEDURE usp_add_location
+CREATE OR ALTER PROCEDURE usp_add_location
     @street_address VARCHAR(40),
     @postal_code VARCHAR(12),
     @city VARCHAR(30),
@@ -128,10 +143,11 @@ AS
 BEGIN
     INSERT INTO tbl_locations (street_address, postal_code, city, state_province, country)
     VALUES (@street_address, @postal_code, @city, @state_province, @country);
-END
+END;
+GO
 
 --Update Location--
-CREATE PROCEDURE usp_update_location
+CREATE OR ALTER PROCEDURE usp_update_location
     @id INT,
     @street_address VARCHAR(40),
     @postal_code VARCHAR(12),
@@ -147,19 +163,21 @@ BEGIN
         state_province = @state_province,
         country = @country
     WHERE id = @id;
-END
+END;
+GO
 
 --Delete Location--
-CREATE PROCEDURE usp_delete_location
+CREATE OR ALTER PROCEDURE usp_delete_location
     @id INT
 AS
 BEGIN
     DELETE FROM tbl_locations
     WHERE id = @id;
 END
+GO
 
 --Add Country--
-CREATE PROCEDURE usp_add_country
+CREATE OR ALTER PROCEDURE usp_add_country
     @id CHAR(3),
     @name VARCHAR(40),
     @region INT
@@ -168,9 +186,10 @@ BEGIN
     INSERT INTO tbl_countries (id, name, region)
     VALUES (@id, @name, @region);
 END
+GO
 
 --Update Country--
-CREATE PROCEDURE usp_UpdateCountry
+CREATE OR ALTER PROCEDURE usp_update_country
     @id CHAR(3),
     @name VARCHAR(40),
     @region INT
@@ -181,15 +200,17 @@ BEGIN
         region = @region
     WHERE id = @id;
 END
+GO
 
 --Delete Country--
-CREATE PROCEDURE usp_delete_country
+CREATE OR ALTER PROCEDURE usp_delete_country
     @id CHAR(3)
 AS
 BEGIN
     DELETE FROM tbl_countries
     WHERE id = @id;
 END
+GO
 
 -- Add Jobs
 CREATE OR ALTER PROCEDURE usp_add_jobs
@@ -214,9 +235,10 @@ BEGIN
 		RETURN;
     END
 END;
+GO
 
 -- Update Jobs
-CREATE PROCEDURE usp_update_jobs
+CREATE OR ALTER PROCEDURE usp_update_jobs
     @id VARCHAR(10),
     @title VARCHAR(35),
 	@min_salary int,
@@ -241,18 +263,20 @@ BEGIN
 		RETURN;
     END
 END
+GO
 
 -- Delete Jobs
-CREATE PROCEDURE usp_delete_jobs
+CREATE OR ALTER PROCEDURE usp_delete_jobs
     @id VARCHAR(10)
 AS
 BEGIN
     DELETE FROM tbl_jobs
     WHERE id = @id;
 END
+GO
 
 --Login
-CREATE PROCEDURE usp_Login
+CREATE OR ALTER PROCEDURE usp_login
     @username VARCHAR(25),
     @password VARCHAR(255)
 AS
@@ -279,9 +303,10 @@ BEGIN
         SELECT 'Login failed: Incorrect password' AS message;
     END
 END;
+GO
 
 --Change Password
-CREATE or alter PROCEDURE usp_change_password
+CREATE OR ALTER PROCEDURE usp_change_password
     @username VARCHAR(25),
     @oldPassword VARCHAR(255),
     @newPassword VARCHAR(255)
@@ -312,6 +337,7 @@ BEGIN
         SELECT 'Password change failed: Username not found' AS message;
     END
 END;
+GO
 
 -- Forgot Password
 CREATE OR ALTER PROCEDURE usp_forgot_password 
@@ -329,13 +355,13 @@ BEGIN
 	DECLARE @is_used BIT;
 	DECLARE @is_expired BIT
 
-    SELECT @employee_id = e.id, @is_expired = e.is_expired, @is_used = e.is_used
+    SELECT @employee_id = e.id, @is_expired = a.is_expired, @is_used = a.is_used
     FROM tbl_employees e
     JOIN tbl_accounts a ON e.id = a.id
     WHERE e.email = @email AND a.otp = @otp;
 
     SELECT @valid_password = dbo.func_password_policy(@new_password);
-	SELECT @passwords_match = dbo.func_password_match(@new_password, @confirm_password);
+	SELECT @password_match = dbo.func_password_match(@new_password, @confirm_password);
 
     IF @employee_id IS NULL
     BEGIN
@@ -349,7 +375,7 @@ BEGIN
         RETURN;
     END
 
-    IF @passwords_match = 0
+    IF @password_match = 0
     BEGIN
         RAISERROR('New password and confirm password do not match', 16, 1);
         RETURN;
@@ -361,15 +387,16 @@ BEGIN
 		RETURN;
 	END
 
-	IF @employee_id IS NOT NULL AND @valid_password = 1 AND @passwords_match = 1 AND is_expired = 0 AND @is_used = 0
+	IF @employee_id IS NOT NULL AND @valid_password = 1 AND @password_match = 1 AND @is_expired = 0 AND @is_used = 0
 	BEGIN
 		UPDATE tbl_accounts
-		SET password = @new_Password, is_used = 1, is_expired = 1
+		SET password = @new_password, is_used = 1, is_expired = 1
 		WHERE id = @employee_id;
 
 		PRINT 'Password updated successfully.';
 	END
 END
+GO
 
 -- Generate OTP
 CREATE OR ALTER PROCEDURE usp_generate_otp 
@@ -405,6 +432,7 @@ BEGIN
 		RETURN;
 	END
 END;
+GO
 
 -- Add Overtime 
 CREATE OR ALTER PROCEDURE usp_add_overtime
@@ -425,6 +453,7 @@ BEGIN
 	INSERT INTO tbl_payslip (employee, salary_period, overtime)
     VALUES (@employee_id, @salary_period_date, @overtime);
 END;
+GO
 
 -- Add Employee or Register
 CREATE OR ALTER PROCEDURE usp_register 
@@ -450,6 +479,17 @@ BEGIN
 	DECLARE @phone_valid BIT;
 	DECLARE @password_match BIT;
 	DECLARE @salary_valid BIT;
+	DECLARE @otp INT;
+
+    -- Check if manager_id exists
+    IF @manager_id IS NOT NULL
+	BEGIN
+		IF NOT EXISTS (SELECT 1 FROM tbl_employees WHERE id = @manager_id)
+		BEGIN
+			RAISERROR('Manager ID does not exist', 16, 1);
+			RETURN;
+		END
+	END
 	
 	-- Check email format
     SET @email_format = dbo.func_email_format(@email);
@@ -499,11 +539,309 @@ BEGIN
 		RETURN;
     END
 
-	INSERT INTO tbl_employees (first_name, last_name, gender, email, phone, hire_date, salary, manager, job, department)
-	VALUES (@first_name, @last_name, @gender, @email, @phone, @hire_date, @salary, @manager_id, @job_id, @department_id);
+	IF @email_format = 1 AND @password_policy = 1 AND @password_match = 1 AND @gender_valid = 1 AND @phone_valid = 1 AND @salary_valid = 1
+	BEGIN
+		SET @otp = FLOOR(RAND() * 900000) + 100000;
 
-	INSERT INTO tbl_accounts (username, password, otp, is_expired, is_used)
-	VALUES (@email, @password, NULL, 0, 0);
+		INSERT INTO tbl_employees (first_name, last_name, gender, email, phone, hire_date, salary, manager, job, department)
+		VALUES (@first_name, @last_name, @gender, @email, @phone, @hire_date, @salary, @manager_id, @job_id, @department_id);
 
-	PRINT 'Employee and account have been successfully registered.';
+		INSERT INTO tbl_accounts (username, password, otp, is_expired, is_used)
+		VALUES (@email, @password, @otp, 0, 0);
+
+		PRINT 'Employee and account have been successfully registered.';
+	END
 END;
+GO
+
+-- Update Employee
+CREATE OR ALTER PROCEDURE usp_update_employee 
+	@employee_id int,
+	@first_name VARCHAR(25),
+	@last_name VARCHAR(25),
+	@gender VARCHAR(10),
+	@email VARCHAR(25),
+	@phone VARCHAR(20),
+	@hire_date DATE,
+	@salary int,
+	@manager_id int,
+	@job_id VARCHAR(10),
+	@department_id int,
+	@password VARCHAR(255),
+	@confirm_password VARCHAR(255)
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+	DECLARE @email_format BIT;
+	DECLARE @password_policy BIT;
+	DECLARE @gender_valid BIT;
+	DECLARE @phone_valid BIT;
+	DECLARE @password_match BIT;
+	DECLARE @salary_valid BIT;
+	
+	-- Check if manager_id exists
+    IF @manager_id IS NOT NULL
+	BEGIN
+		IF NOT EXISTS (SELECT 1 FROM tbl_employees WHERE id = @manager_id)
+		BEGIN
+			RAISERROR('Manager ID does not exist', 16, 1);
+			RETURN;
+		END
+	END
+
+	-- Check email format
+    SET @email_format = dbo.func_email_format(@email);
+    IF @email_format = 0
+    BEGIN
+		RAISERROR('Email format is invalid', 16, 1);
+		RETURN;
+    END
+
+    -- Check password policy
+    SET @password_policy = dbo.func_password_policy(@password);
+    IF @password_policy = 0
+    BEGIN
+        RAISERROR('Password does not meet the policy requirements', 16, 1);
+		RETURN;
+    END
+
+    -- Check if passwords match
+    SET @password_match = dbo.func_password_match(@password, @confirm_password);
+    IF @password_match = 0
+    BEGIN
+		RAISERROR('Passwords do not match', 16, 1);
+		RETURN;
+    END
+
+    -- Check gender validity
+    SET @gender_valid = dbo.func_gender(@gender);
+    IF @gender_valid = 0
+    BEGIN
+        RAISERROR('Gender is invalid', 16, 1);
+		RETURN;
+    END
+
+    -- Check phone number validity
+    SET @phone_valid = dbo.func_phone_number(@phone);
+    IF @phone_valid = 0
+    BEGIN
+        RAISERROR('Phone number is invalid', 16, 1);
+		RETURN;
+    END
+
+    -- Check salary range for the job
+    SET @salary_valid = dbo.func_salary(@job_id, @salary);
+    IF @salary_valid = 0
+    BEGIN
+        RAISERROR('Salary is out of the valid range for the job', 16, 1);
+		RETURN;
+    END
+
+	IF @email_format = 1 AND @password_policy = 1 AND @password_match = 1 AND @gender_valid = 1 AND @phone_valid = 1 AND @salary_valid = 1
+	BEGIN
+		UPDATE tbl_employees 
+		SET 
+			first_name = @first_name,
+			last_name = @last_name,
+			gender = @gender,
+			email = @email,
+			phone = @phone,
+			hire_date = @hire_date,
+			salary = @salary,
+			manager = @manager_id,
+			job = @job_id,
+			department = @department_id
+		WHERE 
+			id = @employee_id;
+
+		UPDATE tbl_accounts
+		SET
+			username = @email,
+			password = @password
+		WHERE id = @employee_id;
+
+		PRINT 'Employee data has been successfully updated.';
+	END
+END;
+GO
+
+-- Delete Employee
+CREATE PROCEDURE usp_delete_employee
+    @employee_id INT
+AS
+BEGIN
+	BEGIN TRANSACTION;
+
+	-- Nonaktifkan trigger sementara
+	DISABLE TRIGGER tr_delete_employee ON tbl_employees;
+
+	-- Update manager
+	UPDATE tbl_employees
+	SET manager = NULL
+	WHERE manager = @employee_id;
+
+	DELETE FROM tbl_payslip WHERE employee = @employee_id;
+	DELETE FROM tbl_job_histories WHERE employee = @employee_id;
+	DELETE FROM tbl_accounts WHERE id = @employee_id;
+	DELETE FROM tbl_employees WHERE id = @employee_id;
+
+	-- Aktifkan trigger kembali
+	ENABLE TRIGGER tr_delete_employee ON tbl_employees;
+	COMMIT TRANSACTION;
+
+	PRINT 'Employee and related data have been deleted successfully';
+END;
+GO
+
+-- Add Role Permissions
+CREATE OR ALTER PROCEDURE usp_add_role_permission
+    @role_id INT,
+    @permission_id INT
+AS
+BEGIN
+    -- Check if role exists
+    IF NOT EXISTS (SELECT 1 FROM tbl_roles WHERE id = @role_id)
+    BEGIN
+        RAISERROR('Role ID does not exist', 16, 1);
+        RETURN;
+    END
+
+    -- Check if permission exists
+    IF NOT EXISTS (SELECT 1 FROM tbl_permissions WHERE id = @permission_id)
+    BEGIN
+        RAISERROR('Permission ID does not exist', 16, 1);
+        RETURN;
+    END
+
+    -- Check if the role already has the permission
+    IF EXISTS (SELECT 1 
+               FROM tbl_role_permissions 
+               WHERE role = @role_id 
+               AND permission = @permission_id)
+    BEGIN
+        RAISERROR('The role already has this permission', 16, 1);
+        RETURN;
+    END
+
+    -- Insert the role-permission pair into tbl_role_permissions
+    INSERT INTO tbl_role_permissions (role, permission)
+    VALUES (@role_id, @permission_id);
+
+    PRINT 'Permission successfully added to role.';
+END;
+GO
+
+-- Add/Update Employee Role
+CREATE OR ALTER PROCEDURE usp_edit_employee_role
+    @employee_id INT,
+    @role_id INT
+AS
+BEGIN
+    DECLARE @account_id INT;
+    DECLARE @existing_role_id INT;
+
+    -- Check if the employee already has an account
+    SELECT @account_id = id
+    FROM tbl_accounts
+    WHERE id = @employee_id;
+
+    -- If the employee doesn't have an account, create a new one
+    IF @account_id IS NULL
+    BEGIN
+        INSERT INTO tbl_accounts (id, username, password, otp, is_expired, is_used)
+        VALUES (@employee_id, '', '', 0, 0, 0);
+
+        SET @account_id = SCOPE_IDENTITY(); -- Get the newly inserted account id
+    END
+
+    -- Check if there is already a role assigned to the employee
+    SELECT @existing_role_id = role
+    FROM tbl_account_roles
+    WHERE account = @account_id;
+
+    -- If there is an existing role assigned, update it; otherwise, insert new role
+    IF @existing_role_id IS NOT NULL
+    BEGIN
+        UPDATE tbl_account_roles
+        SET role = @role_id
+        WHERE account = @account_id;
+    END
+    ELSE
+    BEGIN
+        INSERT INTO tbl_account_roles (account, role)
+        VALUES (@account_id, @role_id);
+    END
+END
+GO
+
+-- Delete Employee Role
+CREATE OR ALTER PROCEDURE usp_delete_employee_role
+    @employee_id INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    DECLARE @account_id INT;
+
+    -- Find the account id associated with the employee
+    SELECT @account_id = id
+    FROM tbl_accounts
+    WHERE id = @employee_id;
+
+    -- If the employee has an account, delete the role assignment
+    IF @account_id IS NOT NULL
+    BEGIN
+        DELETE FROM tbl_account_roles
+        WHERE account = @account_id;
+    END
+END
+GO
+
+-- Edit Profile
+CREATE OR ALTER PROCEDURE usp_edit_profile
+	@employee_id int,
+	@first_name VARCHAR(25),
+	@last_name VARCHAR(25),
+	@email VARCHAR(25),
+	@phone VARCHAR(20)
+AS
+BEGIN
+	DECLARE @email_format BIT;
+	DECLARE @phone_valid BIT;
+
+	-- Check email format
+    SET @email_format = dbo.func_email_format(@email);
+    IF @email_format = 0
+    BEGIN
+		RAISERROR('Email format is invalid', 16, 1);
+		RETURN;
+    END
+
+    -- Check phone number validity
+    SET @phone_valid = dbo.func_phone_number(@phone);
+    IF @phone_valid = 0
+    BEGIN
+        RAISERROR('Phone number is invalid', 16, 1);
+		RETURN;
+    END
+
+	IF @email_format = 1 AND @phone_valid = 1 
+	BEGIN
+		UPDATE tbl_employees 
+		SET 
+			first_name = @first_name,
+			last_name = @last_name,
+			email = @email,
+			phone = @phone
+		WHERE 
+			id = @employee_id;
+
+		UPDATE tbl_accounts
+		SET username = @email
+		WHERE id = @employee_id;
+
+		PRINT 'Employee data has been successfully updated';
+	END
+END;
+GO
