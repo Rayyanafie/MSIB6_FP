@@ -12,7 +12,7 @@ CREATE TABLE tbl_countries (
     id CHAR(3) PRIMARY KEY,
     name VARCHAR(40) NOT NULL,
     region INT,
-    FOREIGN KEY (region) REFERENCES tbl_regions(id)
+    FOREIGN KEY (region) REFERENCES tbl_regions(id) ON DELETE SET DEFAULT
 );
 
 CREATE TABLE tbl_locations (
@@ -22,14 +22,14 @@ CREATE TABLE tbl_locations (
     city VARCHAR(30) NOT NULL,
     state_province VARCHAR(25),
     country CHAR(3),
-    FOREIGN KEY (country) REFERENCES tbl_countries(id)
+    FOREIGN KEY (country) REFERENCES tbl_countries(id) ON DELETE SET DEFAULT
 );
 
 CREATE TABLE tbl_departments (
     id INT IDENTITY(1,1) PRIMARY KEY,
     name VARCHAR(30) NOT NULL,
     location INT,
-    FOREIGN KEY (location) REFERENCES tbl_locations(id)
+    FOREIGN KEY (location) REFERENCES tbl_locations(id) ON DELETE SET DEFAULT
 );
 
 CREATE TABLE tbl_jobs (
@@ -48,6 +48,7 @@ CREATE TABLE tbl_permissions (
     id INT IDENTITY(1,1) PRIMARY KEY,
     name VARCHAR(100) NOT NULL
 );
+
 CREATE TABLE tbl_employees (
     id INT IDENTITY(1,1) PRIMARY KEY,
     first_name VARCHAR(25) NOT NULL,
@@ -61,9 +62,10 @@ CREATE TABLE tbl_employees (
     job VARCHAR(10),
     department INT,
     FOREIGN KEY (manager) REFERENCES tbl_employees(id),
-    FOREIGN KEY (job) REFERENCES tbl_jobs(id),
-    FOREIGN KEY (department) REFERENCES tbl_departments(id)
+    FOREIGN KEY (job) REFERENCES tbl_jobs(id) ON DELETE SET DEFAULT,
+    FOREIGN KEY (department) REFERENCES tbl_departments(id) ON DELETE SET DEFAULT
 );
+
 CREATE TABLE tbl_accounts (
     id INT IDENTITY(1,1) PRIMARY KEY,
     username VARCHAR(25) NOT NULL,
@@ -83,8 +85,8 @@ CREATE TABLE tbl_job_histories (
     department INT,
     PRIMARY KEY (employee, start_date),
     FOREIGN KEY (employee) REFERENCES tbl_employees(id),
-    FOREIGN KEY (job) REFERENCES tbl_jobs(id),
-    FOREIGN KEY (department) REFERENCES tbl_departments(id)
+    FOREIGN KEY (job) REFERENCES tbl_jobs(id) ON DELETE SET DEFAULT,
+    FOREIGN KEY (department) REFERENCES tbl_departments(id) ON DELETE SET DEFAULT
 );
 
 CREATE TABLE tbl_payslip (
@@ -99,15 +101,14 @@ CREATE TABLE tbl_account_roles (
     id INT IDENTITY(1,1) PRIMARY KEY,
     account INT,
     role INT,
-    FOREIGN KEY (account) REFERENCES tbl_accounts(id),
-    FOREIGN KEY (role) REFERENCES tbl_roles(id)
+    FOREIGN KEY (account) REFERENCES tbl_accounts(id) ON DELETE SET DEFAULT,
+    FOREIGN KEY (role) REFERENCES tbl_roles(id) ON DELETE SET DEFAULT
 );
 
 CREATE TABLE tbl_role_permissions (
     id INT IDENTITY(1,1) PRIMARY KEY,
     role INT,
     permission INT,
-    FOREIGN KEY (role) REFERENCES tbl_roles(id),
-    FOREIGN KEY (permission) REFERENCES tbl_permissions(id)
+    FOREIGN KEY (role) REFERENCES tbl_roles(id) ON DELETE SET DEFAULT,
+    FOREIGN KEY (permission) REFERENCES tbl_permissions(id) ON DELETE SET DEFAULT
 );
-
