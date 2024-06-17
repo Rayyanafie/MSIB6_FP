@@ -84,7 +84,6 @@ CREATE TABLE tbl_job_histories (
     job VARCHAR(10),
     department INT,
     PRIMARY KEY (employee, start_date),
-    FOREIGN KEY (employee) REFERENCES tbl_employees(id),
     FOREIGN KEY (job) REFERENCES tbl_jobs(id) ON DELETE SET DEFAULT,
     FOREIGN KEY (department) REFERENCES tbl_departments(id) ON DELETE SET DEFAULT
 );
