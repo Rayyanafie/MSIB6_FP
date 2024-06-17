@@ -30,7 +30,7 @@ EXEC usp_add_country
     @id = 'ZAF', 
     @name = 'South Africa', 
     @region = 4;
-EXEC usp_add_country  
+EXEC usp_add_country 
     @id = 'EGY', 
     @name = 'Egypt', 
     @region = 4;
@@ -66,7 +66,7 @@ EXEC usp_add_location
     @city = 'Johannesburg', 
     @state_province = 'Gauteng', 
     @country = 'ZAF';
-EXEC usp_add_location  
+EXEC usp_add_location 
     @street_address = 'Tahrir Square', 
     @postal_code = '11511', 
     @city = 'Cairo', 
@@ -85,17 +85,17 @@ EXEC usp_add_department @name = 'Research', @location = 5;
 EXEC usp_add_department @name = 'Customer Service', @location = 6;
 
 -- Jobs
-EXEC usp_add_jobs 
+EXEC usp_add_jobs
     @id = 'J101', 
     @title = 'Chief Executive Officer', 
     @min_salary = 50000000, 
     @max_salary = 100000000;
-EXEC usp_add_jobs 
+EXEC usp_add_jobs
     @id = 'J102', 
     @title = 'Chief Technology Officer', 
     @min_salary = 40000000, 
     @max_salary = 80000000;
-EXEC usp_add_jobs 
+EXEC usp_add_jobs
     @id = 'J103', 
     @title = 'Chief Financial Officer', 
     @min_salary = 40000000, 
@@ -125,17 +125,17 @@ EXEC usp_add_jobs
     @title = 'Finance Analyst', 
     @min_salary = 9000000, 
     @max_salary = 13000000;
-EXEC usp_add_jobs 
+EXEC usp_add_jobs
     @id = 'J109', 
     @title = 'Marketing Specialist', 
     @min_salary = 7000000, 
     @max_salary = 11000000;
-EXEC usp_add_jobs 
+EXEC usp_add_jobs
     @id = 'J110', 
     @title = 'Research Scientist', 
     @min_salary = 9000000, 
     @max_salary = 13000000;
-EXEC usp_add_jobs 
+EXEC usp_add_jobs
     @id = 'J111', 
     @title = 'Customer Service Representative', 
     @min_salary = 6000000, 
@@ -310,7 +310,7 @@ EXEC usp_register
     @department_id = 5, 
     @password = 'Robertwilson123!', 
     @confirm_password = 'Robertwilson123!';
-EXEC usp_register 
+EXEC usp_register
     @first_name = 'Sophia', 
     @last_name = 'Taylor', 
     @gender = 'Female', 
@@ -323,7 +323,7 @@ EXEC usp_register
     @department_id = 6, 
     @password = 'Sophiataylor123!', 
     @confirm_password = 'Sophiataylor123!';
-EXEC usp_register 
+EXEC usp_register
     @first_name = 'Daniel', 
     @last_name = 'Martinez', 
     @gender = 'Male', 
@@ -336,7 +336,7 @@ EXEC usp_register
     @department_id = 7, 
     @password = 'Danielmartinez123!', 
     @confirm_password = 'Danielmartinez123!';
-EXEC usp_register 
+EXEC usp_register
     @first_name = 'Liam', 
     @last_name = 'Brown', 
     @gender = 'Male', 
@@ -349,7 +349,7 @@ EXEC usp_register
     @department_id = 8, 
     @password = 'Liambrown123!', 
     @confirm_password = 'Liambrown123!';
-EXEC usp_register 
+EXEC usp_register
     @first_name = 'Alice', 
     @last_name = 'Green', 
     @gender = 'Female', 
@@ -362,7 +362,7 @@ EXEC usp_register
     @department_id = 5, 
     @password = 'Alicegreen123!', 
     @confirm_password = 'Alicegreen123!';
-EXEC usp_register 
+EXEC usp_register
     @first_name = 'James', 
     @last_name = 'Clark', 
     @gender = 'Male', 
@@ -375,7 +375,7 @@ EXEC usp_register
     @department_id = 4, 
     @password = 'Jamesclark123!', 
     @confirm_password = 'Jamesclark123!';
-EXEC usp_register 
+EXEC usp_register
     @first_name = 'Olivia', 
     @last_name = 'Garcia', 
     @gender = 'Female', 
@@ -388,7 +388,7 @@ EXEC usp_register
     @department_id = 7, 
     @password = 'Oliviagarcia123!', 
     @confirm_password = 'Oliviagarcia123!';
-EXEC usp_register 
+EXEC usp_register
     @first_name = 'Lucas', 
     @last_name = 'Miller', 
     @gender = 'Male', 
@@ -401,7 +401,7 @@ EXEC usp_register
     @department_id = 6, 
     @password = 'Lucasmiller123!', 
     @confirm_password = 'Lucasmiller123!';
-EXEC usp_register 
+EXEC usp_register
     @first_name = 'Ethan', 
     @last_name = 'Moore', 
     @gender = 'Male', 
@@ -414,7 +414,7 @@ EXEC usp_register
     @department_id = 6, 
     @password = 'Ethanmoore123!', 
     @confirm_password = 'Ethanmoore123!';
-EXEC usp_register 
+EXEC usp_register
     @first_name = 'Ava', 
     @last_name = 'Hernandez', 
     @gender = 'Female', 
@@ -427,7 +427,7 @@ EXEC usp_register
     @department_id = 8, 
     @password = 'Avahernandez123!', 
     @confirm_password = 'Avahernandez123!';
-EXEC usp_register 
+EXEC usp_register
     @first_name = 'Noah', 
     @last_name = 'Scott', 
     @gender = 'Male', 
@@ -440,7 +440,7 @@ EXEC usp_register
     @department_id = 5, 
     @password = 'Noahscott123!', 
     @confirm_password = 'Noahscott123!';
-EXEC usp_register 
+EXEC usp_register
     @first_name = 'Mia', 
     @last_name = 'Walker', 
     @gender = 'Female', 
@@ -453,7 +453,7 @@ EXEC usp_register
     @department_id = 5, 
     @password = 'Miawalker123!', 
     @confirm_password = 'Miawalker123!';
-EXEC usp_register 
+EXEC usp_register
     @first_name = 'William', 
     @last_name = 'Rodriguez', 
     @gender = 'Male', 
@@ -466,7 +466,7 @@ EXEC usp_register
     @department_id = 7, 
     @password = 'Williamrodriguez123!', 
     @confirm_password = 'Williamrodriguez123!';
-EXEC usp_register 
+EXEC usp_register
     @first_name = 'Charlotte', 
     @last_name = 'Harris', 
     @gender = 'Female', 
@@ -479,7 +479,7 @@ EXEC usp_register
     @department_id = 3, 
     @password = 'Charlotteharris123!', 
     @confirm_password = 'Charlotteharris123!';
-EXEC usp_register 
+EXEC usp_register
     @first_name = 'Benjamin', 
     @last_name = 'Lewis', 
     @gender = 'Male', 
@@ -492,7 +492,7 @@ EXEC usp_register
     @department_id = 8, 
     @password = 'Benjaminlewis123!', 
     @confirm_password = 'Benjaminlewis123!';
-EXEC usp_register 
+EXEC usp_register
     @first_name = 'Amelia', 
     @last_name = 'Young', 
     @gender = 'Female', 
@@ -505,7 +505,7 @@ EXEC usp_register
     @department_id = 4, 
     @password = 'Ameliayoung123!', 
     @confirm_password = 'Ameliayoung123!';
-EXEC usp_register 
+EXEC usp_register
     @first_name = 'Henry', 
     @last_name = 'King', 
     @gender = 'Male', 
@@ -518,7 +518,7 @@ EXEC usp_register
     @department_id = 5, 
     @password = 'Henryking123!', 
     @confirm_password = 'Henryking123!';
-EXEC usp_register 
+EXEC usp_register
     @first_name = 'Evelyn', 
     @last_name = 'Martinez', 
     @gender = 'Female', 
@@ -553,71 +553,71 @@ EXEC usp_add_overtime
     @employee_id = 5, 
     @salary_period = '2024-06', 
     @overtime = 6;
-EXEC usp_add_overtime 
+EXEC usp_add_overtime
     @employee_id = 6, 
     @salary_period = '2024-06', 
     @overtime = 4;
-EXEC usp_add_overtime 
+EXEC usp_add_overtime
     @employee_id = 7, 
     @salary_period = '2024-06', 
     @overtime = 3;
-EXEC usp_add_overtime 
+EXEC usp_add_overtime
     @employee_id = 8, 
     @salary_period = '2024-06', 
     @overtime = 5;
-EXEC usp_add_overtime 
+EXEC usp_add_overtime
     @employee_id = 9, 
     @salary_period = '2024-06', 
     @overtime = 9;
-EXEC usp_add_overtime 
+EXEC usp_add_overtime
     @employee_id = 10, 
     @salary_period = '2024-06', 
     @overtime = 7;
-EXEC usp_add_overtime 
+EXEC usp_add_overtime
     @employee_id = 11, 
     @salary_period = '2024-06', 
     @overtime = 8;
-EXEC usp_add_overtime 
+EXEC usp_add_overtime
     @employee_id = 12, 
     @salary_period = '2024-06', 
     @overtime = 6;
-EXEC usp_add_overtime 
+EXEC usp_add_overtime
     @employee_id = 13, 
     @salary_period = '2024-06', 
     @overtime = 5;
-EXEC usp_add_overtime 
+EXEC usp_add_overtime
     @employee_id = 14, 
     @salary_period = '2024-06', 
     @overtime = 4;
-EXEC usp_add_overtime 
+EXEC usp_add_overtime
     @employee_id = 15, 
     @salary_period = '2024-06', 
     @overtime = 6;
-EXEC usp_add_overtime 
+EXEC usp_add_overtime
     @employee_id = 16, 
     @salary_period = '2024-06', 
     @overtime = 5;
-EXEC usp_add_overtime 
+EXEC usp_add_overtime
     @employee_id = 17, 
     @salary_period = '2024-06', 
     @overtime = 6;
-EXEC usp_add_overtime 
+EXEC usp_add_overtime
     @employee_id = 18, 
     @salary_period = '2024-06', 
     @overtime = 7;
-EXEC usp_add_overtime 
+EXEC usp_add_overtime
     @employee_id = 19, 
     @salary_period = '2024-06', 
     @overtime = 5;
-EXEC usp_add_overtime 
+EXEC usp_add_overtime
     @employee_id = 20, 
     @salary_period = '2024-06', 
     @overtime = 8;
-EXEC usp_add_overtime 
+EXEC usp_add_overtime
     @employee_id = 21, 
     @salary_period = '2024-06', 
     @overtime = 4;
-EXEC usp_add_overtime 
+EXEC usp_add_overtime
     @employee_id = 22, 
     @salary_period = '2024-06', 
     @overtime = 3;
@@ -708,48 +708,69 @@ EXEC usp_update_country
 EXEC usp_update_department @id = 1, @name = 'HR', @location = 2;
 
 EXEC usp_update_jobs 
-    @id = 'J001', 
-    @title = 'Senior Software Developer', 
-    @min_salary = 70000, 
-    @max_salary = 120000;
+    @id = 'J104', 
+    @title = 'Mobile Developer', 
+    @min_salary = 10000000, 
+    @max_salary = 15000000;
 
 EXEC usp_update_region @id = 1, @name = 'Europe';
 
-EXEC usp_update_roles @id = 1, @name = 'Senior Manager';
+EXEC usp_update_roles @id = 2, @name = 'Staff Manager';
 
-EXEC usp_update_permission @id = 1, @name = 'Full Access';
+EXEC usp_update_permission @id = 2, @name = 'View Employee';
 
-EXEC usp_update_employee 
-    @employee_id = 1, 
-    @first_name = 'John', 
-    @last_name = 'Doe', 
-    @gender = 'Male', 
-    @email = 'john.doe@example.com', 
-    @phone = '123-456-7890', 
-    @hire_date = '2023-01-01', 
-    @salary = 80000, 
-    @manager_id = 2, 
-    @job_id = 'J002', 
-    @department_id = 2, 
-    @password = 'NewPassword123', 
-    @confirm_password = 'NewPassword123';
+EXEC usp_update_employee
+	@employee_id = 8,
+	@first_name = 'Muhammad',
+	@last_name = 'Albert',
+	@gender = 'Male', 
+	@email = 'Malbert@gmail.com', 
+	@phone = '0895366968783', 
+	@hire_date = '2023-06-19',
+	@salary = 10000000, 
+	@manager_id = 10, 
+	@job_id = 'J107', 
+	@department_id = 5, 
+	@password = 'Albert123!', 
+	@confirm_password = 'Albert123!';
+
+EXEC usp_edit_profile 
+	@employee_id = 15, 
+	@first_name = 'Cristiano', 
+	@last_name = 'Ronaldo', 
+	@email = 'crseven@gmail.com', 
+	@phone = '0895317528734';
+
+EXEC usp_forgot_password 
+	@Email = 'jane.smith@gmail.com', 
+	@New_Password = 'Password12345!',
+	@Confirm_Password = 'Password12345!',
+	@OTP = 102614;
+
+EXEC usp_generate_otp
+	@employee_id = 2,
+	@employee_email = 'jane.smith@gmail.com';
+
+EXEC usp_edit_employee_role
+	@employee_id = 2,
+	@role_id = 4;
 
 
 -- DELETE
-EXEC usp_delete_location @id = 1;
+EXEC usp_delete_location @id = 2;
 
 EXEC usp_delete_country @id = 'USA';
 
-EXEC usp_delete_department @id = 1;
+EXEC usp_delete_department @id = 9;
 
-EXEC usp_delete_jobs @id = 'J001';
+EXEC usp_delete_jobs @id = 'J105';
 
 EXEC usp_delete_region @id = 1;
 
 EXEC usp_delete_roles @id = 1;
 
-EXEC usp_delete_permission @id = 1;
+EXEC usp_delete_permission @id = 5;
 
-EXEC usp_delete_employee @employee_id = 1;
+EXEC usp_delete_employee @employee_id = 3;
 
-EXEC usp_delete_employee_role @employee_id = 1;
+EXEC usp_delete_employee_role @employee_id = 2;
