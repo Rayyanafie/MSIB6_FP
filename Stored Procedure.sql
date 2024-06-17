@@ -674,8 +674,6 @@ BEGIN
 	BEGIN TRANSACTION;
 
 	-- Nonaktifkan trigger sementara
-	DISABLE TRIGGER tr_delete_employee ON tbl_employees;
-
 	-- Update manager
 	UPDATE tbl_employees
 	SET manager = NULL
@@ -684,16 +682,13 @@ BEGIN
 	DELETE FROM tbl_payslip WHERE employee = @employee_id;
 	DELETE FROM tbl_job_histories WHERE employee = @employee_id;
 	DELETE FROM tbl_accounts WHERE id = @employee_id;
-	DELETE FROM tbl_employees WHERE id = @employee_id;
-
 	-- Aktifkan trigger kembali
-	ENABLE TRIGGER tr_delete_employee ON tbl_employees;
+	DELETE FROM tbl_employees WHERE id = @employee_id;
 	COMMIT TRANSACTION;
 
 	PRINT 'Employee and related data have been deleted successfully';
 END;
 GO
-
 -- Add Role Permissions
 CREATE OR ALTER PROCEDURE usp_add_role_permission
     @role_id INT,
