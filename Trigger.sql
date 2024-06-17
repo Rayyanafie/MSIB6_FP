@@ -29,7 +29,7 @@ ON tbl_employees
 AFTER DELETE
 AS
 BEGIN
-    INSERT INTO tbl_job_histories (employee, start_date, status, job, department)
+    INSERT INTO tbl_job_histories (employee, end_date, status, job, department)
     SELECT id, GETDATE(), 'Resign', job, department
     FROM deleted;
 END;
