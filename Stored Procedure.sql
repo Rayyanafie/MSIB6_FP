@@ -315,7 +315,7 @@ BEGIN
     DECLARE @passwordMatch BIT;
     
     -- Check if the old password matches the stored password
-    SET @passwordMatch = dbo.fn_CheckPassword(@username, @oldPassword);
+    SET @passwordMatch = dbo.func_check_password(@username, @oldPassword);
     
     IF @passwordMatch = 1
     BEGIN
@@ -667,7 +667,7 @@ END;
 GO
 
 -- Delete Employee
-CREATE PROCEDURE usp_delete_employee
+CREATE OR ALTER PROCEDURE usp_delete_employee
     @employee_id INT
 AS
 BEGIN
